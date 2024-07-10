@@ -9,8 +9,8 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const EDEN_AI_URL = process.env.EDEN_AI_URL;
-const EDEN_AI_API_KEY = process.env.EDEN_AI_API_KEY;
+const EDEN_AI_URL =''+ process.env.EDEN_AI_URL;
+const EDEN_AI_API_KEY =''+ process.env.EDEN_AI_API_KEY;
 
 if (!EDEN_AI_URL || !EDEN_AI_API_KEY) {
   console.error('Error: EDEN_AI_URL or EDEN_AI_API_KEY is not set in environment variables.');
