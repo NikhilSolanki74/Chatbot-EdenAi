@@ -48,6 +48,7 @@
         overflow-y: auto;
         padding: 20px;
         background-color: #f9f9f9;
+        position: relative;
       }
 
       .message {
@@ -71,6 +72,27 @@
         color: #333333;
         align-self: flex-start;
         margin-right: auto;
+      }
+
+      .typing-indicator {
+        display: none;
+        align-self: flex-start;
+        margin-right: auto;
+        background-color: #e0e0e0;
+        color: #333333;
+        border-radius: 15px;
+        padding: 10px 15px;
+        max-width: 75%;
+        word-wrap: break-word;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-style: italic;
+      }
+
+      .typing-gif {
+        display: inline-block;
+        vertical-align: middle;
+        width: 40px; 
+        height: 30px; 
       }
 
       .user-input {
@@ -160,8 +182,14 @@
           kk++
         );
 
-        if (sender == "bot") {
+        if (sender === "bot") {
           var tx = "";
+          var typingGif = document.createElement("img");
+          typingGif.src = "https://res.cloudinary.com/dzjvyptwz/image/upload/v1720597838/g4h3az2192nml0etlodb.gif";
+          typingGif.alt = "Typing...";
+          
+          typingGif.classList.add("typing-gif");
+          messageElement.appendChild(typingGif);
           chatBox.appendChild(messageElement);
           var botmsg = document.getElementsByClassName(kk - 1);
           let i = 0;
@@ -170,6 +198,7 @@
             if (i < message.length) {
               tx += message.charAt(i);
               messageElement.textContent = tx;
+              messageElement.appendChild(typingGif);
               i++;
 
               let delay;
@@ -183,8 +212,10 @@
                 }
               }
 
-              // Call typeCharacter again after the calculated delay
+           
               setTimeout(typeCharacter, delay);
+            } else {
+              messageElement.removeChild(typingGif);
             }
           }
 
