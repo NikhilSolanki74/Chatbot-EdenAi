@@ -20,8 +20,9 @@
       }
 
       .chat-container {
-        width: 600px;
-        height: 700px;
+        width: 90%;
+        max-width: 600px; 
+        height: 100%;
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -91,8 +92,8 @@
       .typing-gif {
         display: inline-block;
         vertical-align: middle;
-        width: 40px; 
-        height: 30px; 
+        width: 40px;
+        height: 30px;
       }
 
       .user-input {
@@ -124,6 +125,20 @@
 
       .user-input button:hover {
         background-color: #357ABD;
+      }
+
+
+      @media (max-width: 768px) {
+        .chat-container {
+          width: 90%;
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .message {
+          max-width: 90%;
+        }
       }
     </style>
   </head>
