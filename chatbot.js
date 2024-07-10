@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const EDEN_AI_URL = process.env.EDEN_AI_URL;
 const EDEN_AI_API_KEY = process.env.EDEN_AI_API_KEY;
+
 app.get('/', (req, res) => {
   res.render('chatPage.ejs');
 });
