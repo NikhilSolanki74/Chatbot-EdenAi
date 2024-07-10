@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800;700&display=swap" rel="stylesheet">
+    <title >Hawks ChatBot</title>
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .chat-container {
+        width: 600px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        margin-top: 20px;
+      }
+
+      .chat-heading {
+        background-color: #343a40;
+        padding: 10px;
+        text-align: center;
+        border-bottom: 2px solid #ffffff;
+      }
+
+      .chat-heading h1 {
+        margin: 0;
+        /* font-family: Poppins; */
+      }
+
+      .chat-box {
+        height: 600px;
+        overflow-y: scroll;
+        padding: 10px;
+        background-color: #343a40;
+      }
+
+      .message {
+        margin-bottom: 10px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        max-width: 70%;
+        word-wrap: break-word;
+      }
+
+      .user-message {
+        background-color: #007bff;
+        color: #ffffff;
+        align-self: flex-end;
+        margin-left: auto;
+        font-family: Quicksand;
+      }
+
+      .bot-message {
+        background-color: #adb5bd;
+        color: #000000;
+        align-self: flex-start;
+        margin-right: auto; 
+      }
+
+      .user-input {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #343a40;
+        border-top: 2px solid #ffffff;
+      }
+
+      .user-input input[type="text"] {
+        flex: 1;
+        padding: 8px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+
+      .user-input button {
+        padding: 8px 16px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .user-input button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-heading">
+        <h1  >Hawks ChatBot</h1>
+      </div>
+      <div class="chat-box" id="chat-box">
+      </div>
+      <div class="user-input">
+        <input
+          type="text"
+          id="user-input"
+          onkeydown="handleKeyDown(event)"
+          placeholder="Type your prompt..."
+        />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      function handleKeyDown(event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      }
+
+      function sendMessage() {
+        var userInput = document.getElementById("user-input").value.trim();
+        if (userInput !== "") {
+          appendMessage("user", userInput);
+
+          fetch("/process-message", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: userInput }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              appendMessage("bot", data.response);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              appendMessage("bot", "Oops! Something went wrong.");
+            });
+
+          document.getElementById("user-input").value = "";
+        }
+      }
+   
+
+    var kk = 0;
+function appendMessage(sender, message) {
+    var chatBox = document.getElementById("chat-box");
+    var messageElement = document.createElement("div");
+    messageElement.classList.add(
+        "message",
+        sender === "user" ? "user-message" : "bot-message",
+        kk++
+    );
+
+    if (sender == "bot") {
+        var tx = "";
+        chatBox.appendChild(messageElement);
+        var botmsg = document.getElementsByClassName(kk - 1);
+        let i = 0;
+
+        function typeCharacter() {
+            if (i < message.length) {
+                tx += message.charAt(i);
+                messageElement.textContent = tx;
+                i++;
+                
+          
+                let delay;
+                if (Math.random() < 0.89) {
+                  
+                    delay = Math.floor(Math.random() * 100) ;
+                } else {
+                   
+                    if(Math.random() < 0.98){
+                        delay = Math.floor(Math.random() * 150) ;
+                    }else{
+                        delay = Math.floor(Math.random() * 200)+2000 ;
+
+                    }
+
+                }
+                
+                // Call typeCharacter again after the calculated delay
+                setTimeout(typeCharacter, delay);
+            }
+        }
+
+        typeCharacter();
+    } else {
+        messageElement.textContent = message;
+    }
+
+    chatBox.appendChild(messageElement);
+    // Scroll to bottom of chat box
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+    </script>
+  </body>
+</html>
+
+
