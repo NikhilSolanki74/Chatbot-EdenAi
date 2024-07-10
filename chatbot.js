@@ -36,7 +36,7 @@ app.post('/process-message', async (req, res) => {
   try {
     const response = await axios.post(EDEN_AI_URL, payload, {
       headers: {
-        Authorization: `Bearer ${EDEN_AI_API_KEY}`
+        Authorization: EDEN_AI_API_KEY
       }
     });
 
